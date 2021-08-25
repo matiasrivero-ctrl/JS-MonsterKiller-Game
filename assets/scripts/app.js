@@ -34,7 +34,28 @@ function writeLog(event, value, monsterHealth, playerHealth) {
     finalPlayerHealth: playerHealth,
   };
 
-  if (event === LOG_EVENT_PLAYER_ATTACK) {
+  switch(event) {
+    case LOG_EVENT_PLAYER_ATTACK:
+      logEntry.target = 'MONSTER';
+      break;
+    case LOG_EVENT_PLAYER_STRONG_ATTACK:
+      logEntry.target = 'MONSTER';
+      break;
+    case LOG_EVENT_PLAYER_HEAL:
+      logEntry.target = 'PLAYER';
+      break;
+    case LOG_EVENT_MONSTER_ATTACK:
+      logEntry.target = 'PLAYER';
+      break;
+    case LOG_EVENT_GAME_OVER:
+      logEntry;
+      break;
+
+    default: 
+      logEntry = {}
+  }
+
+/* if (event === LOG_EVENT_PLAYER_ATTACK) {
     logEntry.target = 'MONSTER';
   } else if (event === LOG_EVENT_PLAYER_STRONG_ATTACK) {
     logEntry = {
@@ -67,7 +88,7 @@ function writeLog(event, value, monsterHealth, playerHealth) {
       finalMonsterHealth: monsterHealth,
       finalPlayerHealth: playerHealth,
     };
-  }
+  } */
   battleLog.push(logEntry);
 }
 
@@ -171,7 +192,18 @@ function healPlayerHandler() {
 }
 
 function printLogHandler() {
-  console.log(battleLog);
+  for(let i = 0; i < 3; i++) {
+    console.log('--------------');
+  }
+
+  let _index = 0;
+  for(const logEntry of battleLog) {
+    console.log(`#${_index}`);
+    for(const key in logEntry) {
+      console.log(`${key} => ${logEntry[key]}`);
+    }
+    _index++;
+  }
 }
 
 attackBtn.addEventListener('click', attackHandler);
